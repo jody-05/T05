@@ -27,3 +27,24 @@ d3.csv("data/Ex5_TV_energy_55inchtv_byScreenType.csv", d => ({
 
     createBarChart(data);
 });
+
+d3.csv("data/Ex5_ARE_Spot_Prices.csv", d => ({
+    Year: +d.Year,
+    Queensland: parseFloatOrNull(d["Queensland ($ per megawatt hour)"]),
+    NewSouthWales: parseFloatOrNull(d["New South Wales ($ per megawatt hour)"]),
+    Victoria: parseFloatOrNull(d["Victoria ($ per megawatt hour)"]),
+    SouthAustralia: parseFloatOrNull(d["South Australia ($ per megawatt hour)"]),
+    Tasmania: parseFloatOrNull(d["Tasmania ($ per megawatt hour)"]),
+    Snowy: parseFloatOrNull(d["Snowy ($ per megawatt hour)"]),
+    Average: parseFloatOrNull(d["Average Price (notTas-Snowy)"])
+})).then(data => {
+    console.log(data);
+    console.log("rows:", data.length);
+
+    createMultiLineChart(data);
+});
+
+function parseFloatOrNull(value) {
+    const num = parseFloat(value);
+    return isNaN(num) ? null : num;
+}
