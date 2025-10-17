@@ -1,3 +1,13 @@
 .container{
     justify-items: center;
 }
+
+#tooltip{
+    position: absolute;
+    padding: 6px 10px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    pointer-events: none;
+}

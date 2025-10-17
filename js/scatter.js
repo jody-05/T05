@@ -48,6 +48,8 @@ const createScatterPlot = (data) => {
         .text("Energy Consumption");
 
     // Points (circles)
+    const tooltip = d3.select("#tooltip");
+
     svg.selectAll("circle")
         .data(data)
         .join("circle")
@@ -55,5 +57,22 @@ const createScatterPlot = (data) => {
         .attr("cy", d => yScale(d.energy_consumpt))
         .attr("r", 5)
         .attr("fill", "steelblue")
-        .attr("opacity", 0.7);
+        .attr("opacity", 0.7)
+        .on("mouseover", (event, d) => {
+        tooltip
+            .style("opacity", 1)
+            .html(`
+                Star Rating: ${d.star2}<br/>
+                Energy Consumption: ${d.energy_consumpt}
+            `);
+        })
+        .on("mousemove", (event) => {
+            tooltip
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", () => {
+            tooltip
+                .style("opacity", 0);
+        });
 };
