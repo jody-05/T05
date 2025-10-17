@@ -13,17 +13,10 @@ const createBarChart = (data) => {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // X scale
-    const xScale = d3.scaleBand()
-        .domain(data.map(d => d.Screen_Tech))
-        .range([0, width])
-        .padding(0.3);  // spacing between bars
-
-    // Y scale
-    const yScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.energy_consumpt)])
-        .nice()
-        .range([height, 0]);
+    // Scales
+    const categories = Array.from(new Set(data.map(d => d.Screen_Tech)));
+    const xScale = createBandScaleX(categories, width);
+    const yScale = createLinearScaleYFromZero(data, d => d.energy_consumpt, height);
 
     // Tooltip
     const tooltip = d3.select("#tooltip");
@@ -36,7 +29,7 @@ const createBarChart = (data) => {
         .attr("y", d => yScale(d.energy_consumpt))
         .attr("width", xScale.bandwidth())
         .attr("height", d => height - yScale(d.energy_consumpt))
-        .attr("fill", "steelblue")
+        .attr("fill", d => screenTechColorScale(d.Screen_Tech))
         .on("mouseover", (event, d) => {
             tooltip
                 .style("opacity", 1)

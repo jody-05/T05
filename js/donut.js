@@ -4,18 +4,17 @@ const createDonutChart = (data) => {
     const margin = 40;
     const radius = Math.min(width, height) / 2 - margin;
 
-    const svg = d3.select(".responsive-svg-container-2")
+    const outerSvg = d3.select(".responsive-svg-container-2")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
-        .style("border", "1px solid #ccc")
-        .append("g")
+        .style("border", "1px solid #ccc");
+
+    const svg = outerSvg.append("g")
         .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
     // Color scale
-    const color = d3.scaleOrdinal()
-        .domain(data.map(d => d.Screen_Tech))
-        .range(["#f44336", "#2196f3", "#4caf50"])
+    const color = screenTechColorScale;
 
     // Pie generator
     const pie = d3.pie()
@@ -62,12 +61,22 @@ const createDonutChart = (data) => {
             tooltip.style("opacity", 0);
         });
 
-    // Add labels
-    svg.selectAll("text")
+    // percentage labels
+    const total = d3.sum(data, d => d.energy_consumpt);
+
+    svg.selectAll("text.percent-label")
         .data(arcData)
         .join("text")
-        .text(d => d.data.Screen_Tech)
-        .attr("transform", d => `translate(${outerArc.centroid(d)})`)
+        .attr("class", "percent-label")
+        .attr("transform", d => `translate(${arc.centroid(d)})`)
         .attr("text-anchor", "middle")
-        .style("font-size", "12px");
+        .attr("dy", "0.35em")
+        .style("fill", "white")
+        .style("font-size", "13px")
+        .text(d => {
+            const percent = (d.data.energy_consumpt / total) * 100;
+            return percent >= 5 ? `${percent.toFixed(1)}%` : "";
+        });
+
+    createScreenTechLegend(outerSvg, 20, 20);
 };

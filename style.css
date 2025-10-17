@@ -10,4 +10,5 @@
     border-radius: 4px;
     font-size: 13px;
     pointer-events: none;
+    opacity: 0;
 }

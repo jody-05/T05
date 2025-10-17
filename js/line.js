@@ -11,17 +11,6 @@ const createMultiLineChart = (data) => {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // All lines to plot
-    const regions = [
-        "Queensland",
-        "NewSouthWales",
-        "Victoria",
-        "SouthAustralia",
-        "Tasmania",
-        "Snowy",
-        "Average"
-    ];
-
     // X scale
     const x = d3.scaleLinear()
         .domain(d3.extent(data, d => d.Year))
@@ -31,7 +20,7 @@ const createMultiLineChart = (data) => {
     const y = d3.scaleLinear()
         .domain([
             0,
-            d3.max(regions, region =>
+            d3.max(REGIONS, region =>
                 d3.max(data, d => {
                     const val = d[region];
                     return (val != null && !isNaN(val)) ? val : -Infinity;
@@ -41,19 +30,6 @@ const createMultiLineChart = (data) => {
         .nice()
         .range([height, 0]);
 
-    // Color scale
-    const color = d3.scaleOrdinal()
-        .domain(regions)
-        .range([
-        "#66c2a5", // Queensland
-        "#fc8d62", // NewSouthWales
-        "#8da0cb", // Victoria
-        "#e78ac3", // SouthAustralia
-        "#a6d854", // Tasmania
-        "#ffd92f", // Snowy
-        "black"    // Average
-    ]);
-
     // Line generator
     const line = d3.line()
         .defined(d => d.value != null && !isNaN(d.value))  // skip invalid points
@@ -61,7 +37,7 @@ const createMultiLineChart = (data) => {
         .y(d => y(d.value))
 
     // Prepare data per region
-    const regionData = regions.map(region => ({
+    const regionData = REGIONS.map(region => ({
         name: region,
         values: data.map(d => ({
             Year: d.Year,
@@ -74,7 +50,7 @@ const createMultiLineChart = (data) => {
         .data(regionData)
         .join("path")
         .attr("fill", "none")
-        .attr("stroke", d => color(d.name))
+        .attr("stroke", d => regionColorScale(d.name))
         .attr("stroke-width", d => d.name === "Average" ? 2.5 : 1.5)
         .attr("d", d => line(d.values));
 
@@ -106,14 +82,14 @@ const createMultiLineChart = (data) => {
     const tooltip = d3.select("#tooltip");
 
     // Circles for tooltips
-    regions.forEach(region => {
+    REGIONS.forEach(region => {
         svg.selectAll(`.dot-${region}`)
             .data(data.filter(d => d[region] != null && !isNaN(d[region])))
             .join("circle")
             .attr("cx", d => x(d.Year))
             .attr("cy", d => y(d[region]))
             .attr("r", 3)
-            .attr("fill", color(region))
+            .attr("fill", regionColorScale(region))
             .on("mouseover", (event, d) => {
                 tooltip
                     .style("opacity", 1)
@@ -128,23 +104,9 @@ const createMultiLineChart = (data) => {
     });
 
     // Legend
-    const legend = svg.append("g")
-        .attr("transform", `translate(${width + 10}, 0)`);
-
-    regionData.forEach((d, i) => {
-        const g = legend.append("g")
-            .attr("transform", `translate(0, ${i * 20})`);
-        g.append("line")
-            .attr("x1", 0)
-            .attr("x2", 10)
-            .attr("y1", 5)
-            .attr("y2", 5)
-            .attr("stroke", color(d.name))
-            .attr("stroke-width", d.name === "Average" ? 2.5 : 1.5);
-        g.append("text")
-            .attr("x", 15)
-            .attr("y", 10)
-            .text(d.name)
-            .style("font-size", "12px");
+    createLegend(svg, regionColorScale, REGIONS, {
+        x: width + 10,
+        y: 0,
+        highlightLabel: "Average"
     });
 };

@@ -14,14 +14,8 @@ const createScatterPlot = (data) => {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Scales
-    const xScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.star2)]) // star rating range
-        .range([0, width]);
-
-    const yScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.energy_consumpt)) // energy consumption range
-        .nice() // round y-axis nicely
-        .range([height, 0]); // inverted for SVG y-axis
+    const xScale = createLinearScaleX(data, d => d.star2, width);
+    const yScale = createLinearScaleY(data, d => d.energy_consumpt, height);
 
     // Axes
     const xAxis = d3.axisBottom(xScale).ticks(5).tickFormat(d3.format("d"));    // "d" = no decimal place
