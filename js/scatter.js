@@ -5,7 +5,7 @@ const createScatterPlot = (data) => {
     const height = 400 - margin.top - margin.bottom;
 
     // Create SVG
-    const svg = d3.select(".responsive-svg-container")
+    const svg = d3.select(".responsive-svg-container-1")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -45,7 +45,7 @@ const createScatterPlot = (data) => {
         .attr("y", -40)
         .attr("fill", "black")
         .attr("text-anchor", "middle")
-        .text("Energy Consumption");
+        .text("Energy Consumption (kWh)");
 
     // Points (circles)
     const tooltip = d3.select("#tooltip");
@@ -63,7 +63,7 @@ const createScatterPlot = (data) => {
             .style("opacity", 1)
             .html(`
                 Star Rating: ${d.star2}<br/>
-                Energy Consumption: ${d.energy_consumpt}
+                Energy Consumption: ${d.energy_consumpt} kWh
             `);
         })
         .on("mousemove", (event) => {

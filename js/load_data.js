@@ -7,3 +7,13 @@ d3.csv("data/Ex5_TV_energy.csv", d => ({
 
     createScatterPlot(data);
 });
+
+d3.csv("data/Ex5_TV_energy_Allsizes_byScreenType.csv", d => ({
+    Screen_Tech: d.Screen_Tech,
+    energy_consumpt: +d["Mean(Labelled energy consumption (kWh/year))"]
+})).then(data => {
+    console.log(data);
+    console.log("rows:", data.length);
+
+    createDonutChart(data);
+});
