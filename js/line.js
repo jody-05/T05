@@ -1,12 +1,16 @@
 const createMultiLineChart = (data) => {
+    const viewW = 800;
+    const viewH = 450;
+    
     const margin = { top: 40, right: 100, bottom: 60, left: 60 };
-    const width = 800 - margin.left - margin.right;
-    const height = 450 - margin.top - margin.bottom;
+    const width = viewW - margin.left - margin.right;
+    const height = viewH - margin.top - margin.bottom;
 
     const svg = d3.select(".responsive-svg-container-4")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${viewW} ${viewH}`)
+        .style("width", "100%")
+        .style("height", "auto")
         .style("border", "1px solid #ccc")
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);

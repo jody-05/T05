@@ -1,17 +1,18 @@
 const createDonutChart = (data) => {
-    const width = 500;
-    const height = 500;
+    const viewW = 500;
+    const viewH = 500;
     const margin = 40;
-    const radius = Math.min(width, height) / 2 - margin;
+    const radius = Math.min(viewW, viewH) / 2 - margin;
 
     const outerSvg = d3.select(".responsive-svg-container-2")
         .append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        .attr("viewBox", `0 0 ${viewW} ${viewH}`)
+        .style("width", "100%")
+        .style("height", "auto")
         .style("border", "1px solid #ccc");
 
     const svg = outerSvg.append("g")
-        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+        .attr("transform", `translate(${viewW / 2}, ${viewH / 2})`);
 
     // Color scale
     const color = screenTechColorScale;

@@ -1,14 +1,19 @@
 const createBarChart = (data) => {
+    // Set logical dimensions
+    const viewW = 600;
+    const viewH = 400;
+
     // Set chart dimensions and margins
     const margin = { top: 40, right: 30, bottom: 60, left: 60 };
-    const width = 600 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const width = viewW - margin.left - margin.right;
+    const height = viewH - margin.top - margin.bottom;
 
     // Create SVG
     const svg = d3.select(".responsive-svg-container-3")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", `0 0 ${viewW} ${viewH}`)
+        .style("width", "100%")
+        .style("height", "auto")
         .style("border", "1px solid #ccc")
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);

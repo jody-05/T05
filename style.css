@@ -2,6 +2,26 @@
     justify-items: center;
 }
 
+.responsive-svg-container-1{
+    width: 100%;
+    max-width: 640px;
+}
+
+.responsive-svg-container-2{
+    width: 100%;
+    max-width: 500px;
+}
+
+.responsive-svg-container-3{
+    width: 100%;
+    max-width: 640px;
+}
+
+.responsive-svg-container-4{
+    width: 100%;
+    max-width: 800px;
+}
+
 #tooltip{
     position: absolute;
     padding: 6px 10px;
