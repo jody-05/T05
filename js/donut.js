@@ -26,8 +26,8 @@ const createDonutChart = (data) => {
 
     // Arc generator (for donut)
     const arc = d3.arc()
-        .innerRadius(radius * 0.5)  // inner radius for donut hole
-        .outerRadius(radius * 0.9); // outer radius
+        .innerRadius(radius * 0.3)  // inner radius for donut hole
+        .outerRadius(radius * 0.7); // outer radius
 
     // Outer arc for label positioning
     const outerArc = d3.arc()
