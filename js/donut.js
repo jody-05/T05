@@ -29,11 +29,6 @@ const createDonutChart = (data) => {
         .innerRadius(radius * 0.3)  // inner radius for donut hole
         .outerRadius(radius * 0.7); // outer radius
 
-    // Outer arc for label positioning
-    const outerArc = d3.arc()
-        .innerRadius(radius * 1.1)
-        .outerRadius(radius * 1.1);
-
     // Tooltip
     const tooltip = d3.select("#tooltip");
 
