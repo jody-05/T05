@@ -29,3 +29,9 @@ const regionColorScale = d3.scaleOrdinal()
         "#ffd92f", // Snowy
         "black"    // Average
     ]);
+
+// Function to parse float or return null
+function parseFloatOrNull(value) {
+    const num = parseFloat(value);
+    return isNaN(num) ? null : num;
+}

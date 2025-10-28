@@ -4,6 +4,12 @@ function createLinearScaleX(data, accessor, width) {
         .range([0, width]);
 }
 
+function createLinearScaleXFromZero(data, accessor, width) {
+    return d3.scaleLinear()
+        .domain([0, d3.max(data, accessor)])
+        .range([0, width]);
+}
+
 function createLinearScaleY(data, accessor, height) {
     return d3.scaleLinear()
         .domain(d3.extent(data, accessor))

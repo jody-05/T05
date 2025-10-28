@@ -19,11 +19,11 @@ const createScatterPlot = (data) => {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Scales
-    const xScale = createLinearScaleX(data, d => d.star2, width);
+    const xScale = createLinearScaleXFromZero(data, d => d.star2, width);
     const yScale = createLinearScaleY(data, d => d.energy_consumpt, height);
 
     // Axes
-    const xAxis = d3.axisBottom(xScale).ticks(5).tickFormat(d3.format("d"));    // "d" = no decimal place
+    const xAxis = d3.axisBottom(xScale).ticks(8).tickFormat(d3.format("d"));    // "d" = no decimal place
     const yAxis = d3.axisLeft(yScale);
 
     svg.append("g")
@@ -34,7 +34,7 @@ const createScatterPlot = (data) => {
         .attr("y", 40)
         .attr("fill", "black")
         .attr("text-anchor", "middle")
-        .text("Star Rating");
+        .text("Star Rating (Energy Efficiency)");
 
     svg.append("g")
         .call(yAxis)
@@ -54,7 +54,7 @@ const createScatterPlot = (data) => {
         .join("circle")
         .attr("cx", d => xScale(d.star2))
         .attr("cy", d => yScale(d.energy_consumpt))
-        .attr("r", 5)
+        .attr("r", 4)
         .attr("fill", "steelblue")
         .attr("opacity", 0.7)
         .on("mouseover", (event, d) => {

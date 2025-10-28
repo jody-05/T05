@@ -43,8 +43,3 @@ d3.csv("data/Ex5_ARE_Spot_Prices.csv", d => ({
 
     createMultiLineChart(data);
 });
-
-function parseFloatOrNull(value) {
-    const num = parseFloat(value);
-    return isNaN(num) ? null : num;
-}
