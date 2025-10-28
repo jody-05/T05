@@ -16,12 +16,10 @@ const createMultiLineChart = (data) => {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // X scale
-    const x = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.Year))
-        .range([0, width]);
+    const xScale = createLinearScaleX(data, d => d.Year, width);
 
     // Y scale
-    const y = d3.scaleLinear()
+    const yScale = d3.scaleLinear()
         .domain([
             0,
             d3.max(REGIONS, region =>
@@ -37,8 +35,8 @@ const createMultiLineChart = (data) => {
     // Line generator
     const line = d3.line()
         .defined(d => d.value != null && !isNaN(d.value))  // skip invalid points
-        .x(d => x(d.Year))
-        .y(d => y(d.value))
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d.value))
 
     // Prepare data per region
     const regionData = REGIONS.map(region => ({
@@ -61,10 +59,10 @@ const createMultiLineChart = (data) => {
     // Draw axes
     svg.append("g")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
 
     svg.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(yScale));
 
     // Axis labels
     svg.append("text")
@@ -90,8 +88,8 @@ const createMultiLineChart = (data) => {
         svg.selectAll(`.dot-${region}`)
             .data(data.filter(d => d[region] != null && !isNaN(d[region])))
             .join("circle")
-            .attr("cx", d => x(d.Year))
-            .attr("cy", d => y(d[region]))
+            .attr("cx", d => xScale(d.Year))
+            .attr("cy", d => yScale(d[region]))
             .attr("r", 3)
             .attr("fill", regionColorScale(region))
             .on("mouseover", (event, d) => {
